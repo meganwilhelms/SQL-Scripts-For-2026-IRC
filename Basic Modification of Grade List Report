@@ -32,12 +32,12 @@ SELECT student_crs_hist.transcript_div,
          name_format_view.last_first_middle_suf,   
          name_format_view.preferred_name,   
          students_with_holds_v.id_num  
-    FROM name_format_view LEFT OUTER JOIN students_with_holds_v ON name_format_view.id_num = students_with_holds_v.id_num,   
-         student_crs_hist,   
-         section_master,   
-         student_master,   
-         division_def,   
-         reg_config  
+    FROM TmsEPrd.dbo.name_format_view LEFT OUTER JOIN TmsEPrd.dbo.students_with_holds_v ON name_format_view.id_num = students_with_holds_v.id_num,   
+         TmsEPrd.dbo.student_crs_hist,   
+         TmsEPrd.dbo.section_master,   
+         TmsEPrd.dbo.student_master,   
+         TmsEPrd.dbo.division_def,   
+         TmsEPrd.dbo.reg_config  
    WHERE ( student_master.id_num = student_crs_hist.id_num ) and  
          ( student_crs_hist.yr_cde = section_master.yr_cde ) and  
          ( student_crs_hist.trm_cde = section_master.trm_cde ) and  
@@ -51,3 +51,4 @@ SELECT student_crs_hist.transcript_div,
          reg_config.clas_lst_incl_wlst = 'Y')) AND  
          (reg_config.clas_lst_incl_hold = 'Y' OR  
          students_with_holds_v.id_num is NULL) )   
+         AND student_crs_hist.yr_cde > 2023
