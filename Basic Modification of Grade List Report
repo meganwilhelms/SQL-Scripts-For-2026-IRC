@@ -1,0 +1,53 @@
+SELECT student_crs_hist.transcript_div,   
+         student_crs_hist.id_num,   
+         student_crs_hist.yr_cde,   
+         student_crs_hist.trm_cde,   
+         section_master.x_listed_parnt_crs,   
+         student_crs_hist.crs_cde,   
+         student_crs_hist.transaction_sts,   
+         student_crs_hist.credit_hrs,   
+         student_crs_hist.repeat_flag,   
+         student_crs_hist.credit_type_cde,   
+         student_crs_hist.grade_cde,   
+         student_crs_hist.midtrm_credit_typ,   
+         student_crs_hist.midterm_gra_cde,   
+         student_crs_hist.absences,   
+         section_master.crs_cde,   
+         section_master.crs_title,   
+         section_master.crs_title_2,   
+         section_master.lead_instructr_id,   
+         section_master.crs_enrollment,   
+         section_master.current_reg_count,   
+         section_master.history_reg_count,   
+         section_master.wlisted_reg_count,   
+         student_master.current_class_cde,   
+         reg_config.clas_lst_incl_hold,   
+         reg_config.clas_lst_sho_prfnm,   
+         reg_config.clas_lst_incl_wlst,   
+         reg_config.acad_credit_varies,   
+         division_def.acad_credit_label,   
+         section_master.x_listed_section,   
+         student_crs_hist.begin_dte,   
+         student_crs_hist.end_dte,   
+         name_format_view.last_first_middle_suf,   
+         name_format_view.preferred_name,   
+         students_with_holds_v.id_num  
+    FROM name_format_view LEFT OUTER JOIN students_with_holds_v ON name_format_view.id_num = students_with_holds_v.id_num,   
+         student_crs_hist,   
+         section_master,   
+         student_master,   
+         division_def,   
+         reg_config  
+   WHERE ( student_master.id_num = student_crs_hist.id_num ) and  
+         ( student_crs_hist.yr_cde = section_master.yr_cde ) and  
+         ( student_crs_hist.trm_cde = section_master.trm_cde ) and  
+         ( student_crs_hist.crs_cde = section_master.crs_cde ) and  
+         ( section_master.division_cde = division_def.div_cde ) and  
+         ( name_format_view.id_num = student_master.id_num ) and  
+         ( ( reg_config.reg_config_cde = '1'  ) AND  
+         (student_crs_hist.transaction_sts = 'C' OR  
+         student_crs_hist.transaction_sts = 'H' OR  
+         (student_crs_hist.transaction_sts = 'W' AND  
+         reg_config.clas_lst_incl_wlst = 'Y')) AND  
+         (reg_config.clas_lst_incl_hold = 'Y' OR  
+         students_with_holds_v.id_num is NULL) )   
