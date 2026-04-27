@@ -1,3 +1,4 @@
+/*This is the exact syntax from the Grade List Report. The only edits are adding the database reference to the table names in the FROM statement and adding a reference to which years to pull in the WHERE statement.
 SELECT student_crs_hist.transcript_div,   
          student_crs_hist.id_num,   
          student_crs_hist.yr_cde,   
@@ -32,6 +33,8 @@ SELECT student_crs_hist.transcript_div,
          name_format_view.last_first_middle_suf,   
          name_format_view.preferred_name,   
          students_with_holds_v.id_num  
+	--Add the database name reference to the beginning of each table name in the from statement; for us that would mean adding TmsEPrd.dbo. to the beginning of each table name
+	--The database name can be found on J1 desktop on the bottom right of the window.
     FROM TmsEPrd.dbo.name_format_view LEFT OUTER JOIN TmsEPrd.dbo.students_with_holds_v ON name_format_view.id_num = students_with_holds_v.id_num,   
          TmsEPrd.dbo.student_crs_hist,   
          TmsEPrd.dbo.section_master,   
@@ -50,5 +53,5 @@ SELECT student_crs_hist.transcript_div,
          (student_crs_hist.transaction_sts = 'W' AND  
          reg_config.clas_lst_incl_wlst = 'Y')) AND  
          (reg_config.clas_lst_incl_hold = 'Y' OR  
-         students_with_holds_v.id_num is NULL) )   
-         AND student_crs_hist.yr_cde > 2023
+         students_with_holds_v.id_num is NULL) )  and 
+         student_crs_hist.YR_CDE = 2025 --add a reference in the where statement to which years should be included
