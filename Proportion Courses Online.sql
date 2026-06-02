@@ -1,4 +1,5 @@
 /*This query calculates the proportion of online courses the student is taking for the specified term. 
+To run this query, the only values that should need updated are the two beginning DECLARE statements.
 */
 
 DECLARE @YEAR char(4) = 2025; --CHANGE BASED ON THE YEAR
